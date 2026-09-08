@@ -1,0 +1,15 @@
+# Railway service: frontend (Next.js app)
+# Set this service's Root Directory to "frontend" in the Railway dashboard.
+
+[build]
+builder = "NIXPACKS"
+buildCommand = "cd .. && npm ci && npm run build --workspace=frontend"
+
+[deploy]
+# Next runs as a Node server rather than a static export, because next.config.ts rewrites
+# /api and /x402 to the backend. That keeps the browser on a single origin in production,
+# so the httpOnly SameSite=Lax session cookie is sent on every API call.
+# Set BACKEND_ORIGIN to the backend service's internal URL.
+startCommand = "npm run start"
+healthcheckPath = "/"
+restartPolicyType = "ON_FAILURE"
